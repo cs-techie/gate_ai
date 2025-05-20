@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home - GATEPrep AI Buddy</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f9f9;
+      color: #2f855a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: #2f855a;
+      color: white;
+      padding: 20px 40px;
+      font-size: 24px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+      font-weight: 600;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+    header nav a:hover {
+      color: #a2d5a0;
+    }
+    main {
+      flex: 1;
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    .welcome-msg {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+    .cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(47, 133, 90, 0.2);
+      flex: 1 1 250px;
+      padding: 20px;
+      color: #276749;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      text-align: center;
+    }
+    .card:hover {
+      box-shadow: 0 8px 20px rgba(47, 133, 90, 0.4);
+    }
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .card p {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    footer {
+      background: #e6f0e8;
+      color: #2f855a;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>GATEPrep AI Buddy</div>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#">Mock Tests</a>
+      <a href="#">Study Material</a>
+      <a href="#">Profile</a>
+      <a href="#" onclick="alert('Logout clicked!')">Logout</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Welcome, User!</h1>
+    <p class="welcome-msg">
+      Ready to boost your GATE prep? Choose a section below to get started.
+    </p>
+    <div class="cards">
+      <div class="card" onclick="alert('Go to Mock Tests')">
+        <h3>Mock Tests</h3>
+        <p>Practice full-length mock tests to assess your preparation.</p>
+      </div>
+      <div class="card" onclick="alert('Go to Study Material')">
+        <h3>Study Material</h3>
+        <p>Access syllabus, notes, and important resources curated for you.</p>
+      </div>
+      <div class="card" onclick="alert('Go to Profile')">
+        <h3>Your Profile</h3>
+        <p>Manage your details, track progress, and update preferences.</p>
+      </div>
+    </div>
+  </main>
+  <footer>
+    © 2025 GATEPrep AI Buddy. All rights reserved.
+  </footer>
+</body>
+</html>

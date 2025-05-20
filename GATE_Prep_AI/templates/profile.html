@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #333;
+      margin: 0;
+    }
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    h2 {
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 5px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 15px;
+      background-color: #2e7d32;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 1rem;
+    }
+    .score {
+      font-weight: bold;
+      color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Student Profile</h1>
+</header>
+
+<div class="container">
+  <h2>Completed Mock Tests</h2>
+  <ul id="mockTestsList"></ul>
+
+  <h2>Bookmarked Questions</h2>
+  <ul id="bookmarkedQuestionsList"></ul>
+
+  <a href="mocktest.html" class="btn">Take a Mock Test</a>
+</div>
+
+<script>
+  function loadProfileData() {
+    const mockTestsList = document.getElementById("mockTestsList");
+    const bookmarkedList = document.getElementById("bookmarkedQuestionsList");
+
+    // Load mock test data from localStorage
+    const mockTests = JSON.parse(localStorage.getItem("enrolledMockTests")) || [];
+    mockTestsList.innerHTML = mockTests.length === 0 ? "<li>No mock tests taken yet.</li>" : "";
+
+    mockTests.forEach(test => {
+      const li = document.createElement("li");
+      li.innerHTML = `${test.name} - <span class="score">${test.score}%</span>`;
+      mockTestsList.appendChild(li);
+    });
+
+    // Load bookmarked questions
+    const bookmarks = JSON.parse(localStorage.getItem("bookmarkedQuestions")) || [];
+    bookmarkedList.innerHTML = bookmarks.length === 0 ? "<li>No bookmarks yet.</li>" : "";
+
+    bookmarks.forEach(q => {
+      const li = document.createElement("li");
+      li.textContent = q;
+      bookmarkedList.appendChild(li);
+    });
+  }
+
+  window.onload = loadProfileData;
+</script>
+
+</body>
+</html>

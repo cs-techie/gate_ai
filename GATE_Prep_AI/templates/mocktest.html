@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GATEPrep AI Buddy - Mock Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #ffffff;
+      color: #222;
+    }
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    .question-box {
+      margin-bottom: 2rem;
+    }
+    .options label {
+      display: block;
+      margin: 0.5rem 0;
+      cursor: pointer;
+    }
+    button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #256428;
+    }
+    .bookmark-btn {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      color: #999;
+      cursor: pointer;
+      float: right;
+    }
+    .bookmarked {
+      color: gold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>GATEPrep AI Buddy - Mock Test</h1>
+</header>
+
+<div class="container" id="testContainer">
+  <div id="questionBox" class="question-box"></div>
+  <button onclick="submitTest()">Submit Test</button>
+</div>
+
+<script>
+  const questions = [
+    {
+      id: 1,
+      text: "What is the time complexity of Merge Sort?",
+      options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
+      correct: 1
+    },
+    {
+      id: 2,
+      text: "Which protocol is used for secure communication?",
+      options: ["HTTP", "TCP", "SSH", "FTP"],
+      correct: 2
+    },
+    {
+      id: 3,
+      text: "Which data structure uses FIFO?",
+      options: ["Stack", "Queue", "Tree", "Graph"],
+      correct: 1
+    },
+    {
+      id: 4,
+      text: "What is 2's complement of -5 (in 4-bit)?",
+      options: ["1010", "1011", "1101", "1111"],
+      correct: 2
+    },
+    {
+      id: 5,
+      text: "Which sorting is best for nearly sorted data?",
+      options: ["Bubble Sort", "Selection Sort", "Insertion Sort", "Heap Sort"],
+      correct: 2
+    }
+  ];
+
+  let answers = {};
+  let bookmarks = [];
+
+  function loadQuestions() {
+    const container = document.getElementById("questionBox");
+    container.innerHTML = "";
+
+    questions.forEach((q, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+
+      const isBookmarked = bookmarks.includes(q.text);
+      div.innerHTML = `
+        <h3>
+          Q${index + 1}: ${q.text}
+          <button class="bookmark-btn ${isBookmarked ? 'bookmarked' : ''}" onclick="toggleBookmark('${q.text}', this)">&#9733;</button>
+        </h3>
+        <div class="options">
+          ${q.options.map((opt, i) => `
+            <label>
+              <input type="radio" name="q${q.id}" value="${i}" onchange="saveAnswer(${q.id}, ${i})" />
+              ${opt}
+            </label>
+          `).join('')}
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function toggleBookmark(questionText, button) {
+    if (bookmarks.includes(questionText)) {
+      bookmarks = bookmarks.filter(q => q !== questionText);
+      button.classList.remove("bookmarked");
+    } else {
+      bookmarks.push(questionText);
+      button.classList.add("bookmarked");
+    }
+  }
+
+  function saveAnswer(qid, value) {
+    answers[qid] = value;
+  }
+
+  function submitTest() {
+    let score = 0;
+    questions.forEach(q => {
+      if (answers[q.id] == q.correct) score += 1;
+    });
+
+    const percent = Math.round((score / questions.length) * 100);
+
+    // Save performance history
+    let history = JSON.parse(localStorage.getItem("performanceHistory")) || {};
+    const testName = `Mock Test ${Object.keys(history).length + 1}`;
+
+    history[testName] = [percent];
+    localStorage.setItem("performanceHistory", JSON.stringify(history));
+
+    // Save mock test status
+    let tests = JSON.parse(localStorage.getItem("enrolledMockTests")) || [];
+    tests.push({ name: testName, status: "Completed", score: percent });
+    localStorage.setItem("enrolledMockTests", JSON.stringify(tests));
+
+    // Save bookmarks
+    let bookmarkList = JSON.parse(localStorage.getItem("bookmarkedQuestions")) || [];
+    bookmarkList = [...new Set([...bookmarkList, ...bookmarks])];
+    localStorage.setItem("bookmarkedQuestions", JSON.stringify(bookmarkList));
+
+    alert(`Test submitted! Your score: ${percent}%`);
+    window.location.href = "profile.html"; // Or reload current if profile is in same file
+  }
+
+  window.onload = loadQuestions;
+</script>
+
+</body>
+</html>

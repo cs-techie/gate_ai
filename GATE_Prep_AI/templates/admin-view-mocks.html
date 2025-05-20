@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View All Mock Tests - Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #fff;
+      color: #333;
+    }
+    .header {
+      background-color: #2e7d32;
+      padding: 1rem;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
+    h2 {
+      color: #2e7d32;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .test-card {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .test-card h3 {
+      margin: 0;
+      color: #2e7d32;
+    }
+    .test-card p {
+      margin: 0.5rem 0 0 0;
+    }
+    button {
+      margin-top: 1rem;
+      background: #2e7d32;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #256428;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>View All Mock Tests</h1>
+  </div>
+
+  <div class="container">
+    <h2>Created Mock Tests</h2>
+    <div id="mockList">
+      <!-- Mock tests will be displayed here -->
+    </div>
+    <button onclick="goBack()">⬅️ Back to Dashboard</button>
+  </div>
+
+  <script>
+    function loadMockTests() {
+      const mockTests = JSON.parse(localStorage.getItem("mockTests") || "[]");
+      const mockList = document.getElementById("mockList");
+
+      if (mockTests.length === 0) {
+        mockList.innerHTML = "<p>No mock tests found.</p>";
+        return;
+      }
+
+      let html = "";
+      mockTests.forEach(test => {
+        html += `
+          <div class="test-card">
+            <h3>${test.title}</h3>
+            <p>${test.description || "No description."}</p>
+          </div>
+        `;
+      });
+
+      mockList.innerHTML = html;
+    }
+
+    function goBack() {
+      window.location.href = "admin-dashboard.html";
+    }
+
+    window.onload = loadMockTests;
+  </script>
+
+</body>
+</html>

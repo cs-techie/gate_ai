@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Mock Test - Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #fff;
+      color: #333;
+    }
+    .header {
+      background-color: #2e7d32;
+      padding: 1rem;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #f9f9f9;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
+    h2 {
+      color: #2e7d32;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    form input[type="text"],
+    form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.25rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    form button {
+      background-color: #2e7d32;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+      transition: background-color 0.3s;
+    }
+    form button:hover {
+      background-color: #256428;
+    }
+    .back-btn {
+      margin-top: 1.5rem;
+      display: block;
+      text-align: center;
+      color: #2e7d32;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Create New Mock Test</h1>
+  </div>
+
+  <div class="container">
+    <h2>Enter Mock Test Details</h2>
+    <form id="mockForm">
+      <label for="title">Test Title:</label>
+      <input type="text" id="title" name="title" required />
+
+      <label for="description">Description (optional):</label>
+      <textarea id="description" name="description" rows="4"></textarea>
+
+      <button type="submit">Create Mock Test</button>
+    </form>
+
+    <span class="back-btn" onclick="goBack()">⬅️ Back to Dashboard</span>
+  </div>
+
+  <script>
+    const form = document.getElementById("mockForm");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+
+      if (!title) {
+        alert("Please enter a test title.");
+        return;
+      }
+
+      let mockTests = JSON.parse(localStorage.getItem("mockTests") || "[]");
+      mockTests.push({ title, description });
+      localStorage.setItem("mockTests", JSON.stringify(mockTests));
+
+      alert("Mock test created successfully!");
+
+      // Redirect to admin-mocktests.html after creation
+      window.location.href = "admin-mocktests.html";
+    });
+
+    function goBack() {
+      window.location.href = "admin-dashboard.html";
+    }
+  </script>
+
+</body>
+</html>

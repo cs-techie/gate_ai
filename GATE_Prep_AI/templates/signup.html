@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Signup - GATEPrep AI Buddy</title>
+  <style>
+    /* Container for centering */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #f7f9f9;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /* The box */
+    .signup-box {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(47, 133, 90, 0.3);
+      width: 350px;
+      text-align: center;
+    }
+    .signup-box h2 {
+      color: #2f855a; /* GFG green */
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+    }
+    label {
+      font-weight: 600;
+      color: #2f855a;
+    }
+    input {
+      padding: 10px;
+      border: 1.5px solid #2f855a;
+      border-radius: 5px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input:focus {
+      border-color: #276749; /* darker green */
+    }
+    .signup-btn {
+      background-color: #2f855a;
+      color: white;
+      font-weight: 700;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+    }
+    .signup-btn:hover {
+      background-color: #276749;
+    }
+    .switch-link {
+      color: #2f855a;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .switch-link:hover {
+      color: #276749;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-box">
+    <h2>Create an Account</h2>
+    <form id="signupForm">
+      <label for="name">Full Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter your full name"
+        required
+      />
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
+        required
+      />
+
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Enter your password"
+        required
+      />
+
+      <label for="confirmPassword">Confirm Password</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        name="confirmPassword"
+        placeholder="Confirm your password"
+        required
+      />
+
+      <button type="submit" class="signup-btn">Sign Up</button>
+    </form>
+    <p>
+      Already have an account?
+      <span class="switch-link" onclick="alert('Redirect to Login page (to be implemented)')">
+        Login here
+      </span>
+    </p>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById("signupForm");
+
+    signupForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = signupForm.name.value.trim();
+      const email = signupForm.email.value.trim();
+      const password = signupForm.password.value;
+      const confirmPassword = signupForm.confirmPassword.value;
+
+      if (!name || !email || !password || !confirmPassword) {
+        alert("Please fill in all fields");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+
+      alert(`Account created for ${name} with Email: ${email}`);
+      // Add real signup logic here
+    });
+  </script>
+</body>
+</html>

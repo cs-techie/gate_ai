@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GATEPrep AI Buddy - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #333;
+      margin: 0;
+    }
+    .container {
+      max-width: 400px;
+      margin: 5rem auto;
+      padding: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      text-align: center;
+    }
+    h2 {
+      color: #2e7d32;
+    }
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #999;
+      border-radius: 5px;
+    }
+    button {
+      background: #2e7d32;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #256428;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Login to GATEPrep AI Buddy</h2>
+  <input type="text" id="email" placeholder="Username or Email ID" />
+  <input type="password" id="password" placeholder="Password" />
+  <select id="role">
+    <option value="student">Student</option>
+    <option value="admin">Admin</option>
+  </select>
+  <button onclick="login()">Login</button>
+  <p class="error" id="errorMsg"></p>
+</div>
+
+<script>
+  const users = {
+    student: { email: "student@example.com", password: "student123" },
+    admin: { email: "admin@example.com", password: "admin123" }
+  };
+
+  function login() {
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+    const errorMsg = document.getElementById("errorMsg");
+
+    // Clear previous error
+    errorMsg.innerText = "";
+
+    if (!email || !password) {
+      errorMsg.innerText = "Please fill in all fields.";
+      return;
+    }
+
+    const validUser = users[role];
+
+    if (email === validUser.email && password === validUser.password) {
+      localStorage.setItem("username", email);
+      localStorage.setItem("role", role);
+      window.location.href = role === "admin" ? "admin.html" : "home1.html";
+    } else {
+      errorMsg.innerText = "Invalid credentials. Try again.";
+    }
+  }
+</script>
+
+</body>
+</html>

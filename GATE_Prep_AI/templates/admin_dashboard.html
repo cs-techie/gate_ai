@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - GATEPrep AI Buddy</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #333;
+    }
+    .header {
+      background-color: #2e7d32;
+      padding: 1rem;
+      text-align: center;
+      color: white;
+    }
+    .dashboard {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+    }
+    .dashboard h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #2e7d32;
+    }
+    .nav-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 1rem;
+    }
+    .nav-buttons button {
+      flex: 1 1 40%;
+      background-color: #2e7d32;
+      color: white;
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .nav-buttons button:hover {
+      background-color: #256428;
+    }
+    @media (max-width: 600px) {
+      .nav-buttons button {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Admin Dashboard - GATEPrep AI Buddy</h1>
+  </div>
+
+  <div class="dashboard">
+    <h2>Welcome, Admin!</h2>
+    <div class="nav-buttons">
+      <button onclick="goTo('admin-create-mock.html')">➕ Create Mock Test</button>
+      <button onclick="goTo('admin-view-mocks.html')">📄 View All Mock Tests</button>
+      <button onclick="goTo('admin-manage-materials.html')">📚 Manage Materials</button>
+      <button onclick="logout()">🔓 Logout</button>
+    </div>
+  </div>
+
+  <script>
+    function goTo(page) {
+      window.location.href = page;
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Materials - Admin</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+    .header {
+      background-color: #2e7d32;
+      padding: 1rem;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+    }
+    h2 {
+      text-align: center;
+      color: #2e7d32;
+    }
+    form {
+      margin-bottom: 2rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #2e7d32;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #256428;
+    }
+    .material {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .material h3 {
+      margin: 0 0 0.5rem 0;
+      color: #2e7d32;
+    }
+    .material p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Manage Study Materials</h1>
+  </div>
+
+  <div class="container">
+    <h2>Upload New Material</h2>
+    <form onsubmit="saveMaterial(event)">
+      <label for="title">Material Title:</label>
+      <input type="text" id="title" required />
+
+      <label for="description">Description / Link:</label>
+      <textarea id="description" rows="4" required></textarea>
+
+      <button type="submit">Upload Material</button>
+    </form>
+
+    <h2>Uploaded Materials</h2>
+    <div id="materialList"></div>
+
+    <button onclick="goBack()">⬅️ Back to Dashboard</button>
+  </div>
+
+  <script>
+    function saveMaterial(e) {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+
+      if (!title || !description) return;
+
+      const materials = JSON.parse(localStorage.getItem("materials") || "[]");
+
+      materials.push({ title, description });
+      localStorage.setItem("materials", JSON.stringify(materials));
+
+      document.getElementById("title").value = "";
+      document.getElementById("description").value = "";
+      loadMaterials();
+    }
+
+    function loadMaterials() {
+      const materials = JSON.parse(localStorage.getItem("materials") || "[]");
+      const list = document.getElementById("materialList");
+
+      if (materials.length === 0) {
+        list.innerHTML = "<p>No materials uploaded yet.</p>";
+        return;
+      }
+
+      list.innerHTML = materials.map(mat => `
+        <div class="material">
+          <h3>${mat.title}</h3>
+          <p>${mat.description}</p>
+        </div>
+      `).join("");
+    }
+
+    function goBack() {
+      window.location.href = "admin-dashboard.html";
+    }
+
+    window.onload = loadMaterials;
+  </script>
+
+</body>
+</html>
