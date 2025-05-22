@@ -95,6 +95,116 @@ def get_analytics(student_id):
         'subject_wise': subjects
     })
 
+# ------------ Paste this below this comment ------------ #
+
+from flask import render_template, redirect, url_for, flash
+
+# ---------------- Signup Route ---------------- #
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email'].lower()
+        password = request.form['password']
+        confirm = request.form['confirmPassword']
+        role = request.form['role']  # New line
+
+        if password != confirm:
+            flash('Passwords do not match!', 'error')
+            return redirect('/signup')
+
+        db = get_db()
+        try:
+            db.execute(
+                "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+                (name, email, password, role)
+            )
+            db.commit()
+            flash('Account created successfully! Please log in.', 'success')
+            return redirect('/login')
+        except sqlite3.IntegrityError:
+            flash('Email already registered.', 'error')
+            return redirect('/signup')
+
+    return render_template('signup.html')
+
+
+# ---------------- Login Route ---------------- #
+from flask import Flask, request, jsonify
+import sqlite3
+
+app = Flask(__name__)
+
+def get_db_connection():
+    conn = sqlite3.connect('databases.db')  # Use your DB file name
+    conn.row_factory = sqlite3.Row
+    return conn
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import traceback
+
+app = Flask(__name__)
+CORS(app)
+
+def get_db_connection():
+    import sqlite3
+    conn = sqlite3.connect('your_database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    traceback.print_exc()
+    return jsonify({'status': 'error', 'message': 'Internal server error'}), 500
+
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        data = request.get_json(force=True)
+        print("Received data:", data)
+
+        if not data:
+            return jsonify({'status': 'failure', 'message': 'Invalid JSON payload'}), 400
+
+        email = data.get('email')
+        password = data.get('password')
+        role = data.get('role')
+
+        if not email or not password or not role:
+            return jsonify({'status': 'failure', 'message': 'Missing email, password, or role'}), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM users WHERE email = ? AND password = ? AND role = ?",
+            (email, password, role)
+        )
+        user = cursor.fetchone()
+        conn.close()
+
+        if user:
+            return jsonify({'status': 'success', 'redirect_url': '/home1.html'})
+        else:
+            return jsonify({'status': 'failure', 'message': 'Invalid credentials'}), 401
+
+    except Exception:
+        traceback.print_exc()
+        return jsonify({'status': 'error', 'message': 'Internal server error'}), 500
+  
+# ---------------- Home1 Page ---------------- #
+@app.route('/home1')
+def home1():
+    return render_template('home1.html')
+# ---------------- Logout Route ---------------- #
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/login')
+@app.route('/')
+def home():
+    return "Flask server is running!"
+
 # ---------------- Run the App ---------------- #
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')
