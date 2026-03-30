@@ -5,7 +5,6 @@
   <title>GATEPrep AI Buddy - Login</title>
   <style>
     body {
-
       font-family: Arial, sans-serif;
       background: #ffffff;
       color: hsl(0, 87%, 53%);
@@ -51,46 +50,62 @@
 
 <div class="container">
   <h2>Login to GATEPrep AI Buddy</h2>
-  <input type="text" id="email" placeholder="Username or Email ID" />
-  <input type="password" id="password" placeholder="Password" />
-  <select id="role">
-    <option value="student">Student</option>
-    <option value="admin">Admin</option>
-  </select>
-  <button onclick="login()">Login</button>
-  <p class="error" id="errorMsg"></p>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <select id="role" required>
+        <option value="student">Student</option>
+        <option value="admin">Admin</option>
+    </select>
+    <button type="submit">Login</button>
+  </form>
 </div>
 
 <script>
-  const users = {
-    student: { email: "student@example.com", password: "student123" },
-    admin: { email: "admin@example.com", password: "admin123" }
-  };
-
-  function login() {
-    const email = document.getElementById("email").value.trim().toLowerCase();
-    const password = document.getElementById("password").value;
-    const role = document.getElementById("role").value;
-    const errorMsg = document.getElementById("errorMsg");
-
-    // Clear previous error
-    errorMsg.innerText = "";
-
-    if (!email || !password) {
-      errorMsg.innerText = "Please fill in all fields.";
-      return;
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('loginForm');
+    if (!form) {
+        console.error("Form not found");
+        return;
     }
 
-    const validUser = users[role];
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    if (email === validUser.email && password === validUser.password) {
-      localStorage.setItem("username", email);
-      localStorage.setItem("role", role);
-      window.location.href = role === "admin" ? "admin.html" : "home1.html";
-    } else {
-      errorMsg.innerText = "Invalid credentials. Try again.";
-    }
-  }
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const role = document.getElementById('role').value;
+
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, role }),
+            });
+
+            // Try to parse JSON response, fallback to text if fails
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                const text = await response.text();
+                console.error("Response is not JSON:", text);
+                alert("Server returned non-JSON response.");
+                return;
+            }
+
+            if (response.ok && data.status === "success") {
+                window.location.href = data.redirect_url;
+            } else {
+                alert(data.message || "Login failed.");
+            }
+        } catch (networkError) {
+            console.error("Network or fetch error:", networkError);
+            alert("Network error or server is unreachable.");
+        }
+    });
+});
+
 </script>
 
 </body>
