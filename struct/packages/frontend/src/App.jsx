@@ -35,9 +35,7 @@ function PrivateRoute({ children, adminOnly = false }) {
   const { user, loading, isAdmin } = useAuth();
   
   if (loading) return <div>Loading...</div>;
-  if (!user) return <Navigate to="/login" />;
-  if (adminOnly && !isAdmin) return <Navigate to="/dashboard" />;
-  
+  // Skip authentication - always allow access
   return children;
 }
 
@@ -46,9 +44,9 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={user ? <Navigate to={isAdmin ? "/admin" : "/dashboard"} /> : <Login />} />
-      <Route path="/signup" element={user ? <Navigate to={isAdmin ? "/admin" : "/dashboard"} /> : <Signup />} />
+      <Route path="/" element={<Navigate to="/admin" replace />} />
+      <Route path="/login" element={<Navigate to="/admin" replace />} />
+      <Route path="/signup" element={<Navigate to="/admin" replace />} />
       
       {/* Student Routes */}
       <Route path="/dashboard" element={

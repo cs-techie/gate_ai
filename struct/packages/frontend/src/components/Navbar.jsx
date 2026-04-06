@@ -81,7 +81,7 @@ const Navbar = () => {
       { href: '#ai-analysis', label: 'AI Analysis' }, { href: '#weak-topics', label: 'Weak Topics' },
     ],
     dashboard: [
-      { href: '#student-dashboard', label: 'Student Dashboard' }, { href: '#admin-dashboard', label: 'Admin Dashboard' },
+      { href: '/dashboard', label: 'Student Dashboard' }, { href: '/admin', label: 'Admin Dashboard' },
       { href: '#profile', label: 'Profile' }, { href: '#results', label: 'Results' },
     ],
   };
@@ -95,11 +95,11 @@ const Navbar = () => {
         {hovered && (
           <div style={S.dropdownMenu}>
             {MENUS[id].map(item => (
-              <a key={item.href} href={item.href} style={S.dropdownItem}
+              <Link key={item.href} to={item.href} style={{...S.dropdownItem, textDecoration: 'none'}}
                 onMouseEnter={e => e.target.style.backgroundColor = '#f0faf5'}
                 onMouseLeave={e => e.target.style.backgroundColor = 'transparent'}>
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
         )}

@@ -64,7 +64,9 @@ export default function Login() {
       // Role-based redirect
       navigate(userData?.role === 'admin' ? '/admin' : '/dashboard');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Login failed. Please check your credentials.');
+      console.error('Login error caught in component:', err);
+      const errorMessage = err.response?.data?.detail || err.message || 'Login failed. Please check your credentials.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

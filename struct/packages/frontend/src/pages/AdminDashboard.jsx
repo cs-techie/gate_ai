@@ -22,10 +22,13 @@ export default function AdminDashboard() {
   const loadData = async () => {
     try {
       const [tRes, rRes] = await Promise.all([testsAPI.getAll(), resultsAPI.getAll()]);
-      setTests(tRes.data);
-      setResults(rRes.data);
+      setTests(tRes.data || []);
+      setResults(rRes.data || []);
     } catch (err) {
       console.error('Dashboard load error:', err);
+      // Show dashboard even if API fails
+      setTests([]);
+      setResults([]);
     } finally {
       setLoading(false);
     }

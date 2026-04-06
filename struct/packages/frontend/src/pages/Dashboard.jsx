@@ -90,6 +90,10 @@ export default function Dashboard() {
     ]).then(([t, r]) => {
       setTests(t.data || []);
       setResults(r.data || []);
+    }).catch(err => {
+      console.error('Dashboard error:', err);
+      setTests([]);
+      setResults([]);
     }).finally(() => setLoading(false));
   }, []);
 

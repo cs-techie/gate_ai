@@ -18,14 +18,30 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle 401 errors
+// Create event emitter for redirects (avoids window.location issues)
+const authEvents = new EventTarget();
+export const dispatchAuthEvent = (event) => {
+  const evt = new CustomEvent('auth', { detail: event });
+  authEvents.dispatchEvent(evt);
+};
+
+export const onAuthEvent = (callback) => {
+  authEvents.addEventListener('auth', (e) => callback(e.detail));
+  return () => authEvents.removeEventListener('auth', callback);
+};
+
+// Handle 401 errors WITHOUT using window.location
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Don't redirect on login/signup endpoints - let them handle 401
+    if (error.response?.status === 401 && 
+        !error.config.url?.includes('/auth/login') &&
+        !error.config.url?.includes('/auth/signup')) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      // Emit event instead of using window.location
+      dispatchAuthEvent({ type: 'LOGOUT_REQUIRED' });
     }
     return Promise.reject(error);
   }
